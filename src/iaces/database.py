@@ -9,6 +9,7 @@ from decimal import Decimal
 from typing import Any
 
 import mysql.connector
+from flask import g, has_request_context
 
 from iaces.config import DATABASE_BACKEND, DATABASE_ENABLED, DATABASE_PATH
 
@@ -18,8 +19,9 @@ class DatabaseDisabledError(RuntimeError):
 
 
 def _connect_sqlite() -> sqlite3.Connection:
-    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    connection = sqlite3.connect(str(DATABASE_PATH), timeout=4)
+    path = getattr(g, "workout_database_path", DATABASE_PATH) if has_request_context() else DATABASE_PATH
+    path.parent.mkdir(parents=True, exist_ok=True)
+    connection = sqlite3.connect(str(path), timeout=4)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON")
     connection.executescript(

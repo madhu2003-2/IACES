@@ -29,6 +29,11 @@ fitpredict-train = "iaces.ml.train_model:main"
 fitpredict-evaluate = "iaces.ml.evaluate_model:main"
 fitpredict-train-nutrition = "iaces.ml.train_nutrition_model:main"
 
+[project.optional-dependencies]
+hosting = [
+    "waitress>=3.0.2,<4",
+]
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 

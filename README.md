@@ -4,6 +4,20 @@ FitPredict AI is an end-to-end machine-learning application for workout calorie 
 
 The workout model was trained on three CSVs with 19,837 sessions. It estimates 8.44 kcal per minute of workout duration. The duration-only model had the lowest average error when each dataset counted equally in model selection. Users with the same workout duration receive the same estimate. Errors vary substantially by dataset.
 
+## Deploy the portfolio demo on Render
+
+1. Sign in to Render and open [Deploy IACES](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2Fmadhu2003-2%2FIACES).
+2. Choose your workspace. If prompted, connect GitHub and select `madhu2003-2/IACES`, branch `main`. Use the root `render.yaml` and give the Blueprint a name such as `iaces`.
+3. Review the single **Free** web service, `iaces-fitpredict`, and click **Deploy Blueprint**. The configuration supplies the Python version and build and start commands.
+4. Open the service, wait for **Live**, and click the displayed `onrender.com` URL. This is the link to share. If a build fails, open the deploy log to see the first error.
+5. In **Predict calories**, leave the workout duration at **45 minutes** and click **Predict calories**. The bundled model should return **379.88 kcal**. Save a goal with a nickname to try daily check-ins and the food log, then open **Workout history** to see the entries.
+
+The public URL serves Streamlit. Flask runs privately inside the same service. Each browser session gets a separate temporary SQLite database. Download your progress CSV before closing or refreshing the tab. The local two-window workflow below continues to support persistent SQLite or MySQL history.
+
+The build installs dependencies from `uv.lock` and downloads four verified nutrition tables from the [USDA FNDDS October 2024 release](https://fdc.nal.usda.gov/download-datasets/). The 739-byte fitted workout model and its evaluation metadata ship in `deploy/`; the training datasets, personal logs and Windows virtual environment stay local. The experimental fitness assessment endpoint is part of the local API.
+
+Free services can sleep after 15 minutes of inactivity. A later visit can take about a minute to wake the app. [Render free-service details](https://render.com/docs/free)
+
 ## Running a fresh clone
 
 From a PowerShell window, clone the repository and enter its folder:
@@ -15,7 +29,7 @@ uv sync
 Copy-Item .env.example .env
 ```
 
-The public repository contains source code, the database schema, a Postman collection and aggregate evaluation results. To enable calorie predictions, place compatible workout CSVs in `data/processed/`, then run the training and evaluation commands below. The optional food logger also needs the FoodData Central files described under **Dataset choice and limits**. Workout records and fitted models stay on your computer.
+The public repository contains source code, the database schema, a Postman collection, aggregate evaluation results and the fitted demo calorie model. To train your own local predictor, place compatible workout CSVs in `data/processed/` and run the training and evaluation commands below. To serve the bundled predictor locally, set `FITPREDICT_MODEL_PATH=deploy/workout.joblib` and `FITPREDICT_MANIFEST_PATH=deploy/workout_manifest.json` in your local `.env`. For food search, run `uv run python deploy/prepare_food.py` or install the reference files described below.
 
 ## What is in this project
 

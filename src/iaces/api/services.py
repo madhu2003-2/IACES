@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from collections import defaultdict
 
-from iaces.config import PROJECT_ROOT
+from iaces.config import configured_path
 from iaces.ml.feature_engineering import workout_inputs
 from iaces.ml.predict import load_model, predict_calories
 
@@ -23,7 +23,7 @@ def describe_model() -> dict[str, object]:
     pipeline = load_model()
     preprocessor = pipeline.named_steps["preprocessor"]
     estimator = pipeline.named_steps["model"]
-    manifest_path = PROJECT_ROOT / "reports" / "training_manifest.json"
+    manifest_path = configured_path("FITPREDICT_MANIFEST_PATH", "reports/training_manifest.json")
     manifest: dict[str, object] = {}
     if manifest_path.is_file():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))

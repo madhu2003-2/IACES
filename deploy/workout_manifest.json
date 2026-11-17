@@ -1,0 +1,305 @@
+{
+  "artifact_sha256": "3473490fdd69f2631f0d3d2bc853d9131dcb8a4f4c89640999c9f51bdbb8ff11",
+  "trained_at_utc": "2026-11-17T12:20:30.112763+05:30",
+  "usable_rows": 19837,
+  "serving_candidate": "duration_only",
+  "evaluation_model": "source_selected",
+  "selected_features": [
+    "duration"
+  ],
+  "best_parameters": {
+    "candidate": "duration_only"
+  },
+  "evaluation_protocol": "leave_one_dataset_out",
+  "permutation_importance_mae_kcal": {
+    "gender": 0.0,
+    "age": 0.0,
+    "weight": 0.0,
+    "duration": 99.87226581589995,
+    "heart_rate": 0.0
+  },
+  "holdout_metrics": [
+    {
+      "model": "decision_tree",
+      "rows": 19837,
+      "mae": 241.9936036538489,
+      "mse": 89776.88749558761,
+      "rmse": 299.6279150806674,
+      "r2": -1.0397279161319979
+    },
+    {
+      "model": "duration_heart_rate",
+      "rows": 19837,
+      "mae": 82.11480692213854,
+      "mse": 19888.610679317742,
+      "rmse": 141.02698564217326,
+      "r2": 0.5481314228266245
+    },
+    {
+      "model": "duration_only",
+      "rows": 19837,
+      "mae": 89.5559213861509,
+      "mse": 18255.53921385187,
+      "rmse": 135.1130608559064,
+      "r2": 0.5852347525373259
+    },
+    {
+      "model": "gradient_boosting",
+      "rows": 19837,
+      "mae": 229.97722401623056,
+      "mse": 71693.36303856043,
+      "rmse": 267.7561633997627,
+      "r2": -0.6288708382580639
+    },
+    {
+      "model": "linear_regression",
+      "rows": 19837,
+      "mae": 79.52716548656115,
+      "mse": 21370.80960755153,
+      "rmse": 146.18758362990863,
+      "r2": 0.5144559121744205
+    },
+    {
+      "model": "random_forest",
+      "rows": 19837,
+      "mae": 236.98502832836976,
+      "mse": 75384.7074891165,
+      "rmse": 274.5627569229237,
+      "r2": -0.712738062149382
+    },
+    {
+      "model": "source_selected",
+      "rows": 19837,
+      "mae": 83.07158735052685,
+      "mse": 20835.165727476477,
+      "rmse": 144.34391475734776,
+      "r2": 0.5266257234228673
+    },
+    {
+      "model": "training_median",
+      "rows": 19837,
+      "mae": 279.29232503922975,
+      "mse": 101490.95873137374,
+      "rmse": 318.57645664953606,
+      "r2": -1.305871227375286
+    }
+  ],
+  "source_metrics": [
+    {
+      "model": "decision_tree",
+      "rows": 15000,
+      "mae": 225.43219818505335,
+      "mse": 72416.65614574321,
+      "rmse": 269.10343020062606,
+      "r2": -17.565450325686214,
+      "dataset": "calories"
+    },
+    {
+      "model": "decision_tree",
+      "rows": 3864,
+      "mae": 220.24003955885095,
+      "mse": 72044.37735154388,
+      "rmse": 268.41083687426607,
+      "r2": -4.3713179310290196,
+      "dataset": "exercise_dataset"
+    },
+    {
+      "model": "decision_tree",
+      "rows": 973,
+      "mae": 583.6964337617678,
+      "mse": 427826.10583500285,
+      "rmse": 654.0841733561537,
+      "r2": -4.761424559521458,
+      "dataset": "gym_members_exercise_tracking"
+    },
+    {
+      "model": "duration_heart_rate",
+      "rows": 15000,
+      "mae": 36.260497940255284,
+      "mse": 1654.3062516277487,
+      "rmse": 40.67316377696415,
+      "r2": 0.5758856846930995,
+      "dataset": "calories"
+    },
+    {
+      "model": "duration_heart_rate",
+      "rows": 3864,
+      "mae": 182.74280447431164,
+      "mse": 52002.606639750826,
+      "rmse": 228.04080038394625,
+      "r2": -2.877089979435523,
+      "dataset": "exercise_dataset"
+    },
+    {
+      "model": "duration_heart_rate",
+      "rows": 973,
+      "mae": 389.39954709341504,
+      "mse": 173461.15541131815,
+      "rmse": 416.4866809530866,
+      "r2": -1.3359569396991477,
+      "dataset": "gym_members_exercise_tracking"
+    },
+    {
+      "model": "duration_only",
+      "rows": 15000,
+      "mae": 55.04544152362011,
+      "mse": 3680.0334985710583,
+      "rmse": 60.66327965557961,
+      "r2": 0.056550208876244845,
+      "dataset": "calories"
+    },
+    {
+      "model": "duration_only",
+      "rows": 3864,
+      "mae": 143.10915553906355,
+      "mse": 30895.474172121194,
+      "rmse": 175.77108457343374,
+      "r2": -1.303433251960811,
+      "dataset": "exercise_dataset"
+    },
+    {
+      "model": "duration_only",
+      "rows": 973,
+      "mae": 408.90587120229395,
+      "mse": 192759.00997485855,
+      "rmse": 439.0432894087536,
+      "r2": -1.5958362030541857,
+      "dataset": "gym_members_exercise_tracking"
+    },
+    {
+      "model": "gradient_boosting",
+      "rows": 15000,
+      "mae": 210.45242266355046,
+      "mse": 48922.284861979955,
+      "rmse": 221.1838259502262,
+      "r2": -11.542200893620645,
+      "dataset": "calories"
+    },
+    {
+      "model": "gradient_boosting",
+      "rows": 3864,
+      "mae": 211.8790660563998,
+      "mse": 67950.91606583519,
+      "rmse": 260.67396507099664,
+      "r2": -4.066127119307346,
+      "dataset": "exercise_dataset"
+    },
+    {
+      "model": "gradient_boosting",
+      "rows": 973,
+      "mae": 602.8480386585605,
+      "mse": 437599.8252701305,
+      "rmse": 661.5132842733625,
+      "r2": -4.893044735156868,
+      "dataset": "gym_members_exercise_tracking"
+    },
+    {
+      "model": "linear_regression",
+      "rows": 15000,
+      "mae": 31.18574371920104,
+      "mse": 1403.1286692076453,
+      "rmse": 37.45835913661522,
+      "r2": 0.6402800544077318,
+      "dataset": "calories"
+    },
+    {
+      "model": "linear_regression",
+      "rows": 3864,
+      "mae": 174.72471531390545,
+      "mse": 46004.4071353698,
+      "rmse": 214.4863798365057,
+      "r2": -2.429890104356295,
+      "dataset": "exercise_dataset"
+    },
+    {
+      "model": "linear_regression",
+      "rows": 973,
+      "mae": 446.71934840284405,
+      "mse": 231371.83039652224,
+      "rmse": 481.0112580766923,
+      "r2": -2.1158251631845464,
+      "dataset": "gym_members_exercise_tracking"
+    },
+    {
+      "model": "random_forest",
+      "rows": 15000,
+      "mae": 218.9858838443769,
+      "mse": 53990.17820634225,
+      "rmse": 232.35786667625922,
+      "r2": -12.841456163724203,
+      "dataset": "calories"
+    },
+    {
+      "model": "random_forest",
+      "rows": 3864,
+      "mae": 216.33382794025906,
+      "mse": 69332.93729776332,
+      "rmse": 263.31148341415593,
+      "r2": -4.169164659459801,
+      "dataset": "exercise_dataset"
+    },
+    {
+      "model": "random_forest",
+      "rows": 973,
+      "mae": 596.4746537749801,
+      "mse": 429240.8012825413,
+      "rmse": 655.1647130932353,
+      "r2": -4.780475900672751,
+      "dataset": "gym_members_exercise_tracking"
+    },
+    {
+      "model": "source_selected",
+      "rows": 15000,
+      "mae": 36.260497940255284,
+      "mse": 1654.3062516277487,
+      "rmse": 40.67316377696415,
+      "r2": 0.5758856846930995,
+      "dataset": "calories"
+    },
+    {
+      "model": "source_selected",
+      "rows": 3864,
+      "mae": 182.74280447431164,
+      "mse": 52002.606639750826,
+      "rmse": 228.04080038394625,
+      "r2": -2.877089979435523,
+      "dataset": "exercise_dataset"
+    },
+    {
+      "model": "source_selected",
+      "rows": 973,
+      "mae": 408.90587120229395,
+      "mse": 192759.00997485855,
+      "rmse": 439.0432894087536,
+      "r2": -1.5958362030541857,
+      "dataset": "gym_members_exercise_tracking"
+    },
+    {
+      "model": "training_median",
+      "rows": 15000,
+      "mae": 261.89292216666666,
+      "mse": 72488.51671811128,
+      "rmse": 269.2369155931468,
+      "r2": -17.583873212873794,
+      "dataset": "calories"
+    },
+    {
+      "model": "training_median",
+      "rows": 3864,
+      "mae": 215.8618062378882,
+      "mse": 60009.11272841402,
+      "rmse": 244.96757485106883,
+      "r2": -3.4740205283537593,
+      "dataset": "exercise_dataset"
+    },
+    {
+      "model": "training_median",
+      "rows": 973,
+      "mae": 799.4224049331963,
+      "mse": 713333.1819116136,
+      "rmse": 844.5905409792449,
+      "r2": -8.606275206993018,
+      "dataset": "gym_members_exercise_tracking"
+    }
+  ]
+}

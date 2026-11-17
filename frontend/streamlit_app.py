@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import os
 from datetime import date
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import pandas as pd
 import plotly.express as px
@@ -13,15 +15,24 @@ import streamlit as st
 st.set_page_config(page_title="FitPredict AI", page_icon="🏃", layout="wide")
 
 api_url = os.getenv("FITPREDICT_API_URL", "http://127.0.0.1:5000").rstrip("/")
+hosted_sessions = os.getenv("IACES_HOSTED_SESSION_DIR")
+api_headers = {}
+if hosted_sessions:
+    if "_history_directory" not in st.session_state:
+        st.session_state["_history_directory"] = TemporaryDirectory(prefix="session-", dir=hosted_sessions)
+    api_headers["X-IACES-Session"] = Path(st.session_state["_history_directory"].name).name
 st.title("FitPredict AI")
 st.caption("Workout calorie estimates powered by your trained model.")
 
 with st.sidebar:
     st.subheader("Connection")
-    api_url = st.text_input("Flask API address", value=api_url).rstrip("/")
+    if hosted_sessions:
+        st.caption("Demo history belongs to this browser session. Download your progress before leaving.")
+    else:
+        api_url = st.text_input("Flask API address", value=api_url).rstrip("/")
     if st.button("Check API"):
         try:
-            response = requests.get(f"{api_url}/health", timeout=5)
+            response = requests.get(f"{api_url}/health", headers=api_headers, timeout=5)
             response.raise_for_status()
             health = response.json()
             if health.get("model_available"):
@@ -60,7 +71,7 @@ with predict_tab:
             "user_name": user_name.strip() or None,
         }
         try:
-            response = requests.post(f"{api_url}/calories", json=body, timeout=60)
+            response = requests.post(f"{api_url}/calories", json=body, headers=api_headers, timeout=60)
             result = response.json()
             if response.ok and result.get("success"):
                 st.session_state["latest_prediction"] = {
@@ -104,7 +115,7 @@ with predict_tab:
 
 def load_history(name: str = "") -> pd.DataFrame:
     params = {"user_name": name} if name.strip() else None
-    response = requests.get(f"{api_url}/workouts", params=params, timeout=8)
+    response = requests.get(f"{api_url}/workouts", params=params, headers=api_headers, timeout=8)
     if not response.ok:
         detail = response.json().get("error", "Workout history is unavailable.")
         raise RuntimeError(detail)
@@ -113,7 +124,7 @@ def load_history(name: str = "") -> pd.DataFrame:
 
 
 def progress_api(method: str, route: str, **kwargs) -> dict[str, object]:
-    response = requests.request(method, f"{api_url}{route}", timeout=10, **kwargs)
+    response = requests.request(method, f"{api_url}{route}", headers=api_headers, timeout=10, **kwargs)
     try:
         result = response.json()
     except ValueError as exc:
@@ -132,12 +143,13 @@ with progress_tab:
     
 
     fitness_name = st.text_input(
-        "Profile name for this local tracker",
+        "Profile name" if hosted_sessions else "Profile name for this local tracker",
         max_chars=100,
         key="fitness_profile_name",
-        help="Profiles are saved under this name in the local database.",
+        help="Use a nickname to link goals, check-ins, food entries and workouts.",
     ).strip()
-    st.caption("The app has no sign-in; anyone using the same local app can enter this profile name.")
+    if not hosted_sessions:
+        st.caption("The app has no sign-in; anyone using the same local app can enter this profile name.")
     stored_profile = st.session_state.get("fitness_profile")
     if stored_profile and stored_profile.get("user_name") != fitness_name:
         stored_profile = None
@@ -351,7 +363,7 @@ with progress_tab:
             if len(food_query) >= 2:
                 try:
                     response = requests.get(
-                        f"{api_url}/foods", params={"q": food_query}, timeout=20
+                        f"{api_url}/foods", params={"q": food_query}, headers=api_headers, timeout=20
                     )
                     result = response.json()
                     if response.ok and result.get("success"):
