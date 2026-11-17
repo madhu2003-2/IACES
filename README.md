@@ -72,12 +72,12 @@ The artifact is saved to `models/fndds_nutrition_estimator.joblib`; evaluation a
 
 Each workout CSV was held out in turn. The training procedure selected its model using only the other files. MAE is the average absolute difference between an estimate and the recorded calorie value. Lower is better.
 
-| Held-out sessions | Previous Random Forest MAE | New selection procedure MAE | Fixed duration-only model MAE |
+| Held-out sessions | New selection procedure MAE | Fixed duration-only model MAE |
 |---|---:|---:|---:|
-| All 19,837 sessions | 236.99 kcal | 83.07 kcal | 89.56 kcal |
-| 15,000 short workouts | 218.99 kcal | 36.26 kcal | 55.05 kcal |
-| 3,864 exercise records | 216.33 kcal | 182.74 kcal | 143.11 kcal |
-| 973 gym sessions | 596.47 kcal | 408.91 kcal | 408.91 kcal |
+| All 19,837 sessions | 83.07 kcal | 89.56 kcal |
+| 15,000 short workouts | 36.26 kcal | 55.05 kcal |
+| 3,864 exercise records |  182.74 kcal | 143.11 kcal |
+| 973 gym sessions | 408.91 kcal | 408.91 kcal |
 
 The selection procedure reduced pooled MAE by 64.9%. The final fit selected the duration-only model. Its error averaged over the three files with equal weight was 202.35 kcal. The large gym-session error and unverified label definitions limit individual use. These are development benchmarks on the same three files used to improve the project. See [the model card](docs/model_card.md) for the baselines and limitations.
 
