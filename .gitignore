@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Local environment and secrets
+.venv/
+.env
+
+# User data and generated model/report artifacts
+datasets/*
+!datasets/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+database/*.sqlite3
+database/*.sqlite3-*
+models/*
+!models/.gitkeep
+reports/model_holdout_predictions.csv
+reports/model_cross_validation.csv
+reports/training_manifest.json
+reports/fndds_nutrition/
+
+# Notebook and editor state
+.ipynb_checkpoints/
+.vscode/
+
+# Local data, settings, and workspace identifiers
+.env.*
+!.env.example
+.postman/
+data/*
+!data/processed/
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+~$*
+
+# Historical local deliverables
+/IACES_FitPredict_Presentation_Updated.pptx
+/docs/FitPredict_Project_Presentation.pptx
+/docs/IACES_FitPredict_Presentation_Updated.pptx
+/docs/FitPredict_Project_Report.docx
+/reports/fitness_assessment_metrics_previous.json

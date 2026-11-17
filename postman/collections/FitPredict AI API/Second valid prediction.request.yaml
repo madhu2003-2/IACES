@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{base_url}}/calories"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: '{"age":35,"gender":"Female","weight":62,"duration":30,"heart_rate":115,"user_name":"{{user_name}}"}'
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('returns HTTP 200', () => pm.response.to.have.status(200));
+      pm.test('returns an estimate', () => pm.expect(pm.response.json()).to.have.property('estimated_calories'));
+    language: text/javascript
+order: 10000

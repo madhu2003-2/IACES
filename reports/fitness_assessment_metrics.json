@@ -1,0 +1,112 @@
+{
+  "dataset": "bodyPerformance.csv",
+  "source_rows": 13393,
+  "usable_rows": 13376,
+  "source_sha256": "b200de0bdcb1c8f6ca28050286adccb352b7ce2dca9e7d5fea98b9990e50eb8f",
+  "training_rows": 10700,
+  "holdout_rows": 2676,
+  "split": "stratified random row holdout, 20%, seed 42 (reused from prior model)",
+  "selected_model": "hist_gradient_boosting",
+  "selection": "highest macro F1 in three-fold stratified CV on training data only",
+  "cross_validation": {
+    "random_forest": {
+      "accuracy": 0.7288780806465113,
+      "macro_f1": 0.7287087497957985
+    },
+    "extra_trees": {
+      "accuracy": 0.7405599656979028,
+      "macro_f1": 0.7401667570257889
+    },
+    "hist_gradient_boosting": {
+      "accuracy": 0.7408403657401883,
+      "macro_f1": 0.7410881091820127
+    }
+  },
+  "accuracy": 0.7567264573991032,
+  "macro_f1": 0.7568155039989164,
+  "majority_class_baseline_accuracy": 0.25,
+  "classification_report": {
+    "A": {
+      "precision": 0.7277227722772277,
+      "recall": 0.8789237668161435,
+      "f1-score": 0.7962085308056872,
+      "support": 669.0
+    },
+    "B": {
+      "precision": 0.6210995542347697,
+      "recall": 0.624813153961136,
+      "f1-score": 0.6229508196721312,
+      "support": 669.0
+    },
+    "C": {
+      "precision": 0.7627118644067796,
+      "recall": 0.672645739910314,
+      "f1-score": 0.7148530579825259,
+      "support": 669.0
+    },
+    "D": {
+      "precision": 0.9404958677685951,
+      "recall": 0.8505231689088192,
+      "f1-score": 0.8932496075353218,
+      "support": 669.0
+    },
+    "accuracy": 0.7567264573991032,
+    "macro avg": {
+      "precision": 0.763007514671843,
+      "recall": 0.7567264573991032,
+      "f1-score": 0.7568155039989164,
+      "support": 2676.0
+    },
+    "weighted avg": {
+      "precision": 0.7630075146718429,
+      "recall": 0.7567264573991032,
+      "f1-score": 0.7568155039989164,
+      "support": 2676.0
+    }
+  },
+  "confusion_matrix_labels": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "confusion_matrix": [
+    [
+      588,
+      78,
+      2,
+      1
+    ],
+    [
+      157,
+      418,
+      80,
+      14
+    ],
+    [
+      58,
+      140,
+      450,
+      21
+    ],
+    [
+      5,
+      37,
+      58,
+      569
+    ]
+  ],
+  "features": [
+    "gender",
+    "age",
+    "height_cm",
+    "weight_kg",
+    "body_fat_percent",
+    "grip_force_kg",
+    "flexibility_cm",
+    "situps",
+    "broad_jump_cm"
+  ],
+  "trained_at_utc": "2026-11-16T07:05:46.501513+00:00",
+  "limitations": "Previously used random row holdout; further unbiased evaluation needs a fresh independent dataset. Unseen people or other populations are not independently verified. Source, label rules, and physical test protocols require confirmation. This is not a clinical or goal-time model."
+}

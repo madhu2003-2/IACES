@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{base_url}}/calories"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{bad json"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('returns HTTP 400', () => pm.response.to.have.status(400));
+      pm.test('returns a JSON validation error', () => pm.expect(pm.response.json().errors).to.be.an('array'));
+    language: text/javascript
+order: 8000

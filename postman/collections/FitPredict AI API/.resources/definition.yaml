@@ -1,0 +1,5 @@
+$kind: collection
+description: Manual API requests for FitPredict AI. Start Flask first. Run valid prediction requests only after you have trained the model. This collection has not been run as part of project setup.
+variables:
+  base_url: http://127.0.0.1:5000
+  user_name: Alex

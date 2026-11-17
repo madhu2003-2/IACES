@@ -1,0 +1,74 @@
+{
+  "info": {
+    "_postman_id": "0b923872-4cec-4d8b-8a7d-f90b18df1c20",
+    "name": "FitPredict AI API",
+    "description": "Manual API requests for FitPredict AI. Start Flask first. Run valid prediction requests only after you have trained the model. This collection has not been run as part of project setup.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "base_url", "value": "http://127.0.0.1:5000"},
+    {"key": "user_name", "value": "Alex"}
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": {"method": "GET", "header": [], "url": {"raw": "{{base_url}}/health", "host": ["{{base_url}}"], "path": ["health"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 200', () => pm.response.to.have.status(200));", "pm.test('reports API status', () => pm.expect(pm.response.json().status).to.eql('ok'));", "pm.test('includes model readiness', () => pm.expect(pm.response.json()).to.have.property('model_available'));"]}}]
+    },
+    {
+      "name": "Valid calorie prediction",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"age\": 25,\n  \"gender\": \"Male\",\n  \"weight\": 70,\n  \"duration\": 45,\n  \"heart_rate\": 130,\n  \"user_name\": \"{{user_name}}\"\n}", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 200', () => pm.response.to.have.status(200));", "const body = pm.response.json();", "pm.test('returns a non-negative kcal estimate', () => { pm.expect(body.success).to.eql(true); pm.expect(body.estimated_calories).to.be.a('number'); pm.expect(body.estimated_calories).to.be.at.least(0); pm.expect(body.unit).to.eql('kcal'); });"]}}]
+    },
+    {
+      "name": "Missing age",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"gender\":\"Male\",\"weight\":70,\"duration\":45,\"heart_rate\":130}", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 400', () => pm.response.to.have.status(400));", "pm.test('identifies missing age', () => pm.expect(pm.response.json().errors.join(' ')).to.include('age'));"]}}]
+    },
+    {
+      "name": "Missing weight",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"age\":25,\"gender\":\"Male\",\"duration\":45,\"heart_rate\":130}", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 400', () => pm.response.to.have.status(400));", "pm.test('identifies missing weight', () => pm.expect(pm.response.json().errors.join(' ')).to.include('weight'));"]}}]
+    },
+    {
+      "name": "Negative duration",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"age\":25,\"gender\":\"Male\",\"weight\":70,\"duration\":-1,\"heart_rate\":130}", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 400', () => pm.response.to.have.status(400));", "pm.test('identifies duration range', () => pm.expect(pm.response.json().errors.join(' ')).to.include('duration'));"]}}]
+    },
+    {
+      "name": "Invalid gender",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"age\":25,\"gender\":\"Other\",\"weight\":70,\"duration\":45,\"heart_rate\":130}", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 400', () => pm.response.to.have.status(400));", "pm.test('identifies invalid gender', () => pm.expect(pm.response.json().errors.join(' ')).to.include('gender'));"]}}]
+    },
+    {
+      "name": "Invalid heart rate",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"age\":25,\"gender\":\"Male\",\"weight\":70,\"duration\":45,\"heart_rate\":500}", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 400', () => pm.response.to.have.status(400));", "pm.test('identifies heart-rate range', () => pm.expect(pm.response.json().errors.join(' ')).to.include('heart_rate'));"]}}]
+    },
+    {
+      "name": "Malformed JSON",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{bad json", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 400', () => pm.response.to.have.status(400));", "pm.test('returns a JSON validation error', () => pm.expect(pm.response.json().errors).to.be.an('array'));"]}}]
+    },
+    {
+      "name": "Empty request body",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 400', () => pm.response.to.have.status(400));"]}}]
+    },
+    {
+      "name": "Second valid prediction",
+      "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"age\":35,\"gender\":\"Female\",\"weight\":62,\"duration\":30,\"heart_rate\":115,\"user_name\":\"{{user_name}}\"}", "options": {"raw": {"language": "json"}}}, "url": {"raw": "{{base_url}}/calories", "host": ["{{base_url}}"], "path": ["calories"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 200', () => pm.response.to.have.status(200));", "pm.test('returns an estimate', () => pm.expect(pm.response.json()).to.have.property('estimated_calories'));"]}}]
+    },
+    {
+      "name": "Model transparency summary",
+      "request": {"method": "GET", "header": [], "url": {"raw": "{{base_url}}/model-info", "host": ["{{base_url}}"], "path": ["model-info"]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns HTTP 200 after a model is trained', () => pm.response.to.have.status(200));", "const body = pm.response.json();", "pm.test('includes holdout metrics and global feature importance', () => { pm.expect(body.success).to.eql(true); pm.expect(body).to.have.property('holdout_metrics'); pm.expect(body.feature_importance).to.be.an('array'); });"]}}]
+    },
+    {
+      "name": "Workout history",
+      "request": {"method": "GET", "header": [], "url": {"raw": "{{base_url}}/workouts?user_name={{user_name}}", "host": ["{{base_url}}"], "path": ["workouts"], "query": [{"key": "user_name", "value": "{{user_name}}"}]}},
+      "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('returns history or a clear disabled response', () => pm.expect([200, 503]).to.include(pm.response.code));", "if (pm.response.code === 200) pm.test('returns a workouts array', () => pm.expect(pm.response.json().workouts).to.be.an('array'));"]}}]
+    }
+  ]
+}
